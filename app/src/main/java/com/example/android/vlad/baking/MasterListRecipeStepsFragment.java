@@ -12,10 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.android.vlad.baking.model.Ingredient;
 import com.example.android.vlad.baking.model.Recipe;
 import com.example.android.vlad.baking.model.Step;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -25,6 +28,7 @@ import com.example.android.vlad.baking.model.Step;
 public class MasterListRecipeStepsFragment extends Fragment {
 
     private RecyclerView recipeRecyclerView;
+    private TextView textView;
     private RecipeStepAdapter recipeStepAdapter;
     private Recipe recipe;
 
@@ -39,7 +43,9 @@ public class MasterListRecipeStepsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps_master_list, container, false);
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 1);
+        textView = rootView.findViewById(R.id.ingredient_tv);
         recipeRecyclerView = rootView.findViewById(R.id.recyclerview_recipe_steps);
+
         recipeRecyclerView.setLayoutManager(layoutManager);
         recipeRecyclerView.setHasFixedSize(true);
 
@@ -57,6 +63,7 @@ public class MasterListRecipeStepsFragment extends Fragment {
         }
 
         StringBuilder ingredientList = createIngredientList(recipe);
+        textView.setText(ingredientList);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this.getContext());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this.getContext(), BakingWidgetProvider.class));

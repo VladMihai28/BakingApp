@@ -30,9 +30,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecipeSteps"
+            android:configChanges="orientation|screenSize|layoutDirection"
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".StepActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
             android:parentActivityName=".RecipeSteps"/>
     </application>
 

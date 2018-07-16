@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.vlad.baking.model.Step;
 import com.example.android.vlad.baking.MasterListRecipeStepsFragment.onRecipeStepClickListener;
+import com.example.android.vlad.baking.utils.ImageUtils;
 
 import java.util.List;
 
@@ -33,9 +35,11 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
     public class RecipeStepAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView recipeStepTextView;
+        public final ImageView recipeStepImageView;
         public RecipeStepAdapterViewHolder(View view){
             super(view);
             recipeStepTextView = view.findViewById(R.id.recipe_step_name);
+            recipeStepImageView = view.findViewById(R.id.recipe_step_image_view);
             view.setOnClickListener(this);
         }
 
@@ -66,6 +70,9 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
 
         if (currentRecipeStep!= null) {
             holder.recipeStepTextView.setText(currentRecipeStep.getDescription());
+            if (ImageUtils.thumbnailIsValid(currentRecipeStep.getThumbnailURL())) {
+                ImageUtils.setImage(holder.recipeStepImageView.getContext(), currentRecipeStep.getThumbnailURL(), holder.recipeStepImageView);
+            }
         }
     }
 
