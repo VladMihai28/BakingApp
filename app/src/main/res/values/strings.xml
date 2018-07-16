@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Baking</string>
+    <string name="recipe_list">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json</string>
+    <string name="recipe_key">recipe_key</string>
+    <string name="step_key">step_key</string>
+    <string name="recipes_key">recipes_key</string>
+    <string name="default_widget_text">Please select a recipe from the app</string>
+</resources>
