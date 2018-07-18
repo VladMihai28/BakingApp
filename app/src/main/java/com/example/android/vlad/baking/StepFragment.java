@@ -3,6 +3,7 @@ package com.example.android.vlad.baking;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,8 @@ public class StepFragment extends Fragment {
     ImageView thumbnailImageView;
     private SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView playerView;
+    private long playerPosition;
+    private boolean isPlayWhenReady;
 
     public StepFragment(){
     }
@@ -55,13 +58,19 @@ public class StepFragment extends Fragment {
         shortDescriptionTextView = (TextView) rootView.findViewById(R.id.recipe_step_short_description);
         descriptionTextView = (TextView) rootView.findViewById(R.id.recipe_step_description);
         thumbnailImageView = (ImageView) rootView.findViewById(R.id.videoThumbnail);
+        playerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
 
         if (savedInstanceState != null){
             this.step = savedInstanceState.getParcelable(getString(R.string.step_key));
+            this.playerPosition = savedInstanceState.getLong(getString(R.string.player_position_key));
+            this.isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.play_state_key));
+        }
+        else{
+            this.isPlayWhenReady = true;
+            this.playerPosition = 0L;
         }
         shortDescriptionTextView.setText(this.step.getShortDescription());
         descriptionTextView.setText(this.step.getDescription());
-        playerView = (SimpleExoPlayerView) rootView.findViewById(R.id.playerView);
 
         startPlayback();
 
@@ -83,9 +92,14 @@ public class StepFragment extends Fragment {
         if (!video.endsWith("mp4")){
             return;
         }
-
         Uri videoUri = Uri.parse(step.getVideoURL());
         initializePlayer(videoUri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startPlayback();
     }
 
     private void initializePictureViewer(String thumbnail){
@@ -108,7 +122,8 @@ public class StepFragment extends Fragment {
                     this.getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
 
             exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
+            exoPlayer.seekTo(this.playerPosition);
+            exoPlayer.setPlayWhenReady(isPlayWhenReady);
 
         }
     }
@@ -122,14 +137,26 @@ public class StepFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
+        super.onStop();
         releasePlayer();
-        super.onPause();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        long position = 0L;
+        boolean isPlayWhenReady;
+
+        if (exoPlayer != null) {
+            position = exoPlayer.getCurrentPosition();
+            isPlayWhenReady = exoPlayer.getPlayWhenReady();
+        }
+        else {
+            isPlayWhenReady = true;
+        }
         outState.putParcelable(getString(R.string.step_key), step);
+        outState.putLong(getString(R.string.player_position_key), position);
+        outState.putBoolean(getString(R.string.play_state_key), isPlayWhenReady);
         super.onSaveInstanceState(outState);
     }
 }

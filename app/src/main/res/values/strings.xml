@@ -5,4 +5,6 @@
     <string name="step_key">step_key</string>
     <string name="recipes_key">recipes_key</string>
     <string name="default_widget_text">Please select a recipe from the app</string>
+    <string name="player_position_key">player_position_key</string>
+    <string name="play_state_key">play_state_key</string>
 </resources>

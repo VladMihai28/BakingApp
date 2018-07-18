@@ -24,14 +24,14 @@ public class StepActivity extends AppCompatActivity {
             step = intent.getParcelableExtra(getString(R.string.step_key));
         }
 
-        StepFragment stepFragment = new StepFragment();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        stepFragment.setStep(step);
-
-        fragmentManager.beginTransaction()
-                .add(R.id.step_container, stepFragment)
-                .commit();
+        if (savedInstanceState == null) {
+            StepFragment stepFragment = new StepFragment();
+            stepFragment.setStep(step);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_container, stepFragment)
+                    .commit();
+        }
     }
 
 }
